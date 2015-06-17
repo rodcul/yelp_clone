@@ -84,14 +84,20 @@ feature 'restaurants' do
   context 'deleting restaurants' do
     before do
       create_restaurant("Trade")
-      sign_in
     end
 
     scenario 'removes a restaurant when a user clicks a delete link' do
+      sign_in
       visit '/restaurants'
       click_link 'Delete Trade'
       expect(page).not_to have_content 'Trade'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+
+    scenario 'non-logged in user cannot see delete buttons' do
+      visit '/restaurants'
+      expect(page).to_not have_content('Delete Trade')
+    end
+
   end
 end
